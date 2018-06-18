@@ -1,0 +1,17 @@
+ [
+    {
+        "mode": "REQUIRED",
+        "name": "name",
+        "type": "STRING"
+    },
+    {
+        "mode": "REQUIRED",
+        "name": "age",
+        "type": "INTEGER"
+    },
+    {
+        "mode": "REQUIRED",
+        "name": "message_number",
+        "type": "INTEGER"
+    }
+]

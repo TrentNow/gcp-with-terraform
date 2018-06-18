@@ -1,0 +1,3 @@
+module "pubsub" {
+source = "pubsub"
+}
