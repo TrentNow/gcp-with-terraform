@@ -119,7 +119,7 @@ data "template_file" "subscribe_data_template" {
 }
 
 resource "google_compute_instance" "subscribertobigquery_west_instances" {
-  count = 3
+  count = 2
   name         = "subscriber-load-west-${count.index}"
   project      = "${var.prodproject}"
   machine_type = "f1-micro"
@@ -146,3 +146,30 @@ resource "google_compute_instance" "subscribertobigquery_west_instances" {
   metadata_startup_script = "${data.template_file.subscribe_data_template.rendered}; "
 }
 
+resource "google_compute_instance" "subscribertobigquery_east_instances" {
+  count = 2
+  name         = "subscriber-load-east-${count.index}"
+  project      = "${var.prodproject}"
+  machine_type = "f1-micro"
+  zone         = "us-east1-b"
+  scheduling {
+    preemptible  = true
+    automatic_restart = false
+  }
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-8"
+      size  = "60"
+      type  = "pd-standard"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+  service_account {
+    scopes = ["https://www.googleapis.com/auth/pubsub","https://www.googleapis.com/auth/bigquery","https://www.googleapis.com/auth/bigquery.insertdata"]
+  }
+  metadata_startup_script = "${data.template_file.subscribe_data_template.rendered}; "
+}
